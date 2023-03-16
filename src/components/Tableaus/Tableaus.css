@@ -1,0 +1,58 @@
+#tableaus {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tableaus {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.tableaus > .card {
+  position: absolute;
+}
+
+.tableaus > .card:nth-of-type(1) {
+  top: 0px;
+}
+.tableaus > .card:nth-of-type(2) {
+  top: 15px;
+}
+.tableaus > .card:nth-of-type(3) {
+  top: 30px;
+}
+.tableaus > .card:nth-of-type(4) {
+  top: 45px;
+}
+.tableaus > .card:nth-of-type(5) {
+  top: 60px;
+}
+.tableaus > .card:nth-of-type(6) {
+  top: 75px;
+}
+.tableaus > .card:nth-of-type(7) {
+  top: 90px;
+}
+.tableaus > .card:nth-of-type(8) {
+  top: 105px;
+}
+.tableaus > .card:nth-of-type(9) {
+  top: 120px;
+}
+.tableaus > .card:nth-of-type(10) {
+  top: 135px;
+}
+.tableaus > .card:nth-of-type(11) {
+  top: 150px;
+}
+.tableaus > .card:nth-of-type(12) {
+  top: 165px;
+}
+.tableaus > .card:nth-of-type(13) {
+  top: 180px;
+}
+.tableaus > .card:nth-of-type(14) {
+  top: 195px;
+}

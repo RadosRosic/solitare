@@ -1,24 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import Stock from "./components/Stock";
+import Tableaus from "./components/Tableaus";
+import Talon from "./components/Talon";
+import useInitializeGame from "./hooks/initialize-game";
 
 function App() {
+  const { startGame } = useInitializeGame();
+
+  useEffect(() => {
+    startGame();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Stock />
+      <Talon />
+      <Tableaus />
     </div>
   );
 }
