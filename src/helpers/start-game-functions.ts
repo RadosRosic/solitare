@@ -1,9 +1,7 @@
 import { NewDeck, DrawCardResponse, Card } from "./types";
 
 export const getNewDeck = async (): Promise<NewDeck> => {
-  const response = await fetch(
-    "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1"
-  );
+  const response = await fetch("https://deckofcardsapi.com/api/deck/new/");
   const deck = await response.json();
   return deck;
 };

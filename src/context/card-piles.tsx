@@ -150,7 +150,7 @@ export const CardPilesContextProvider: React.FC<{
         break;
       case "foundations":
         const newFoundations = [...foundations];
-        movingCards = [newFoundations[fromPileNumber].pop()];
+        movingCards = [newFoundations[fromPileNumber].shift()];
         setFoundations(newFoundations);
     }
 
