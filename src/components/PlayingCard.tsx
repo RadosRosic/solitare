@@ -10,7 +10,7 @@ const PlayingCard: React.FC<{ card: Card; cardIndex: number }> = ({
   card,
   cardIndex,
 }) => {
-  const { selectCard } = useContext(CardPilesContext);
+  const { selectCard, moveCard, isCardSelected } = useContext(CardPilesContext);
 
   return (
     <img
@@ -19,7 +19,9 @@ const PlayingCard: React.FC<{ card: Card; cardIndex: number }> = ({
       className={card.faceUp ? "card faceup" : "card"}
       alt={`${card.value} ${card.suit}`}
       key={card.suit + card.value}
-      onClick={(event) => selectCard(event)}
+      onClick={(event) =>
+        isCardSelected ? moveCard(event) : selectCard(event)
+      }
     />
   );
 };

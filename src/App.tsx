@@ -1,8 +1,10 @@
 import { useEffect } from "react";
+import useInitializeGame from "./hooks/initialize-game";
+
+import Foundations from "./components/Foundations";
 import Stock from "./components/Stock";
 import Tableaus from "./components/Tableaus";
 import Talon from "./components/Talon";
-import useInitializeGame from "./hooks/initialize-game";
 
 function App() {
   const { startGame } = useInitializeGame();
@@ -12,11 +14,17 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <Stock />
-      <Talon />
+    <>
+      <div style={{ display: "flex", justifyContent: "space-around" }}>
+        <div style={{ display: "flex" }}>
+          <Stock />
+          <Talon />
+        </div>
+        <Foundations />
+      </div>
+
       <Tableaus />
-    </div>
+    </>
   );
 }
 

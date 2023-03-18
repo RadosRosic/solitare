@@ -20,4 +20,23 @@ export interface Card {
   value: number;
 }
 
+export interface CardLocation {
+  pileType: string | null;
+  pileNumber: number | null;
+  cardNumber: number | null;
+}
+
 export type Foundation = Card[] | null;
+
+export type Pile = "tableaus" | "talon" | "foundations";
+
+export type CardCoordinates =
+  | {
+      toPileType: string;
+      fromPileType: string;
+      toPileNumber: number;
+      fromPileNumber: number;
+      toCardNumber: number | null;
+      fromCardNumber: number;
+    }
+  | false;

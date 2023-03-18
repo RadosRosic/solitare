@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { CardPilesContext } from "../context/card-piles";
+import { CardPilesContext } from "../../context/card-piles";
 
 import "./Stock.css";
 

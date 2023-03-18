@@ -1,6 +1,6 @@
 import { createContext, useReducer } from "react";
 
-import { Card } from "../helpers/types";
+import { Card, CardCoordinates } from "../helpers/types";
 
 const initialState = {
   stock: [],
@@ -8,6 +8,7 @@ const initialState = {
   tableaus: [[], [], [], [], [], [], []],
   foundations: [[], [], [], []],
   pickupLocation: { pileType: null, pileNumber: null, cardNumber: null },
+  isCardSelected: false,
 };
 
 const reducer = (state: any, action: any) => {
@@ -20,6 +21,8 @@ const reducer = (state: any, action: any) => {
       return { ...state, tableaus: action.payload };
     case "setFoundations":
       return { ...state, foundations: action.payload };
+    case "setIsCardSelected":
+      return { ...state, isCardSelected: action.payload };
     case "setPickupLocation":
       return { ...state, pickupLocation: action.payload };
     default:
@@ -37,21 +40,26 @@ const getClickedElement = (clickedElement: HTMLElement) => {
 
 export const CardPilesContext = createContext<{
   talon: Card[] | null;
-  tableaus: Card[][];
+  tableaus: (Card[] | [])[];
+  foundations: (Card[] | [])[];
+  isCardSelected: boolean;
   setStock: (stock: Card[]) => void;
   setTableaus: (tableaus: Card[][]) => void;
   drawCard: () => void;
   selectCard: (event: React.MouseEvent) => void;
+  moveCard: (event: React.MouseEvent) => void;
+  unselectCard: () => void;
 }>({
   ...initialState,
+
   setTableaus: () => {},
   setStock: () => {},
   // setTalon: () => {},
   // setFoundations: () => {},
   drawCard: () => {},
   selectCard: () => {},
-  // dropCards: () => {},
-  // unselectCards: () => {},
+  moveCard: () => {},
+  unselectCard: () => {},
 });
 
 export const CardPilesContextProvider: React.FC<{
@@ -93,6 +101,125 @@ export const CardPilesContextProvider: React.FC<{
     const pickupLocation = getClickedElement(event.target as HTMLElement);
 
     dispatch({ type: "setPickupLocation", payload: pickupLocation });
+    dispatch({ type: "setIsCardSelected", payload: true });
+  };
+
+  const unselectCard = () => {
+    dispatch({
+      type: "setPickupLocation",
+      payload: initialState.pickupLocation,
+    });
+    dispatch({
+      type: "setIsCardSelected",
+      payload: false,
+    });
+  };
+
+  const moveCard = (event: React.MouseEvent) => {
+    const { talon, tableaus, foundations } = state;
+    const legalMove = isLegalMove(event);
+    if (!legalMove) return;
+
+    const {
+      fromPileType,
+      toPileType,
+      fromCardNumber,
+      toCardNumber,
+      fromPileNumber,
+      toPileNumber,
+    } = legalMove;
+
+    let movingCards;
+
+    switch (fromPileType) {
+      case "talon":
+        const newTalon = [...talon];
+        movingCards = [newTalon.shift()];
+        setTalon(newTalon);
+        break;
+      case "tableaus":
+        const newTableaus = [...tableaus];
+        movingCards = newTableaus[fromPileNumber].splice(fromCardNumber);
+        if (newTableaus[fromPileNumber].length) {
+          newTableaus[fromPileNumber].at(-1).faceUp = true;
+        }
+        setTableaus(newTableaus);
+        break;
+      case "foundations":
+        const newFoundations = [...foundations];
+        movingCards = [newFoundations[fromPileNumber].pop()];
+        setFoundations(newFoundations);
+    }
+
+    switch (toPileType) {
+      case "tableaus":
+        const newTableaus = [...tableaus];
+        newTableaus[toPileNumber].push(...movingCards);
+        setTableaus(newTableaus);
+        break;
+      case "foundations":
+        const newFoundations = [...foundations];
+        newFoundations[toPileNumber].unshift(...movingCards);
+        setFoundations(newFoundations);
+        break;
+    }
+
+    unselectCard();
+  };
+
+  const isLegalMove = (
+    event: React.MouseEvent
+  ): CardCoordinates | undefined => {
+    const {
+      clickedPileType: fromPileType,
+      clickedPileNumber: fromPileNumber,
+      clickedCardNumber: fromCardNumber,
+    } = state.pickupLocation;
+
+    const {
+      clickedPileType: toPileType,
+      clickedPileNumber: toPileNumber,
+      clickedCardNumber: toCardNumber,
+    } = getClickedElement(event.target as HTMLElement);
+
+    const fromCard =
+      fromPileType === "talon"
+        ? (state[fromPileType][0] as Card)
+        : (state[fromPileType][fromPileNumber][fromCardNumber] as Card);
+
+    const toCard = state[toPileType][toPileNumber][toCardNumber] as Card;
+
+    const moveConfiguration = {
+      fromPileType,
+      toPileType,
+      fromCardNumber,
+      toCardNumber,
+      fromPileNumber,
+      toPileNumber,
+    };
+
+    if (
+      toPileType === "tableaus" &&
+      toCard &&
+      toCard.color !== fromCard.color &&
+      toCard.value - fromCard.value === 1
+    ) {
+      return moveConfiguration;
+    } else if (toPileType === "tableaus" && !toCard && fromCard.value === 13) {
+      return moveConfiguration;
+    } else if (
+      (toPileType === "foundations" && !toCard && fromCard.value === 1) ||
+      (toPileType === "foundations" &&
+        toCard &&
+        toCard.suit === fromCard.suit &&
+        toCard.value - fromCard.value === -1)
+    ) {
+      console.log(moveConfiguration);
+      return moveConfiguration;
+    } else {
+      console.log(toCard, fromCard);
+      return false;
+    }
   };
 
   return (
@@ -100,10 +227,14 @@ export const CardPilesContextProvider: React.FC<{
       value={{
         talon: state.talon,
         tableaus: state.tableaus,
+        foundations: state.foundations,
+        moveCard,
         setStock,
         setTableaus,
         drawCard,
         selectCard,
+        unselectCard,
+        isCardSelected: state.isCardSelected,
       }}
     >
       {children}
