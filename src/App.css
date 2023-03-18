@@ -1,0 +1,14 @@
+.app {
+  width: 70%;
+  margin: auto;
+  padding: 10px;
+}
+
+.flex {
+  display: flex;
+  gap: 10px;
+}
+
+.between {
+  justify-content: space-between;
+}

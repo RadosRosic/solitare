@@ -39,27 +39,28 @@ const getClickedElement = (clickedElement: HTMLElement) => {
 };
 
 export const CardPilesContext = createContext<{
-  talon: Card[] | null;
+  talon: Card[];
   tableaus: (Card[] | [])[];
   foundations: (Card[] | [])[];
   isCardSelected: boolean;
+  stock: Card[];
   setStock: (stock: Card[]) => void;
   setTableaus: (tableaus: Card[][]) => void;
   drawCard: () => void;
   selectCard: (event: React.MouseEvent) => void;
   moveCard: (event: React.MouseEvent) => void;
   unselectCard: () => void;
+  flipTalonToStock: () => void;
 }>({
   ...initialState,
 
   setTableaus: () => {},
   setStock: () => {},
-  // setTalon: () => {},
-  // setFoundations: () => {},
   drawCard: () => {},
   selectCard: () => {},
   moveCard: () => {},
   unselectCard: () => {},
+  flipTalonToStock: () => {},
 });
 
 export const CardPilesContextProvider: React.FC<{
@@ -118,13 +119,15 @@ export const CardPilesContextProvider: React.FC<{
   const moveCard = (event: React.MouseEvent) => {
     const { talon, tableaus, foundations } = state;
     const legalMove = isLegalMove(event);
-    if (!legalMove) return;
+    if (!legalMove) {
+      unselectCard();
+      return;
+    }
 
     const {
       fromPileType,
       toPileType,
       fromCardNumber,
-      toCardNumber,
       fromPileNumber,
       toPileNumber,
     } = legalMove;
@@ -214,12 +217,16 @@ export const CardPilesContextProvider: React.FC<{
         toCard.suit === fromCard.suit &&
         toCard.value - fromCard.value === -1)
     ) {
-      console.log(moveConfiguration);
       return moveConfiguration;
     } else {
-      console.log(toCard, fromCard);
       return false;
     }
+  };
+
+  const flipTalonToStock = () => {
+    const newStock = [...state.talon];
+    setStock(newStock);
+    setTalon([]);
   };
 
   return (
@@ -228,12 +235,14 @@ export const CardPilesContextProvider: React.FC<{
         talon: state.talon,
         tableaus: state.tableaus,
         foundations: state.foundations,
+        stock: state.stock,
         moveCard,
         setStock,
         setTableaus,
         drawCard,
         selectCard,
         unselectCard,
+        flipTalonToStock,
         isCardSelected: state.isCardSelected,
       }}
     >

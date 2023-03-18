@@ -6,6 +6,8 @@ import Stock from "./components/Stock";
 import Tableaus from "./components/Tableaus";
 import Talon from "./components/Talon";
 
+import "./App.css";
+
 function App() {
   const { startGame } = useInitializeGame();
 
@@ -14,17 +16,16 @@ function App() {
   }, []);
 
   return (
-    <>
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
-        <div style={{ display: "flex" }}>
+    <div className="app">
+      <div className="flex between">
+        <div className="flex">
           <Stock />
           <Talon />
         </div>
         <Foundations />
       </div>
-
       <Tableaus />
-    </>
+    </div>
   );
 }
 
