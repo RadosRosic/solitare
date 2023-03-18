@@ -19,3 +19,8 @@
   border: none;
   outline: none;
 }
+
+.flip-btn {
+  color: white;
+  font-weight: bold;
+}

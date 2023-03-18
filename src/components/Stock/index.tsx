@@ -1,10 +1,8 @@
 import { useContext } from "react";
 import { CardPilesContext } from "../../context/card-piles";
+import { cardBack } from "../PlayingCard";
 
 import "./Stock.css";
-
-const cardBack =
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Card_back_01.svg/1200px-Card_back_01.svg.png";
 
 const Stock = () => {
   const { drawCard, stock, flipTalonToStock } = useContext(CardPilesContext);
@@ -15,7 +13,9 @@ const Stock = () => {
           <img src={cardBack} className="card" alt="facedown card" />
         </button>
       ) : (
-        <button onClick={flipTalonToStock}>Flip Talon</button>
+        <button className="flip-btn" onClick={flipTalonToStock}>
+          Flip Talon
+        </button>
       )}
     </div>
   );

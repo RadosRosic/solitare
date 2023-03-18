@@ -3,7 +3,7 @@ import { CardPilesContext } from "../context/card-piles";
 import { Card } from "../helpers/types";
 import "./PlayingCard.css";
 
-const cardBack =
+export const cardBack =
   "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Card_back_01.svg/1200px-Card_back_01.svg.png";
 
 const PlayingCard: React.FC<{ card: Card; cardIndex: number }> = ({
