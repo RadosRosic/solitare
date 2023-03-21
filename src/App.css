@@ -12,3 +12,7 @@
 .between {
   justify-content: space-between;
 }
+
+.mb1 {
+  margin-bottom: 10px;
+}

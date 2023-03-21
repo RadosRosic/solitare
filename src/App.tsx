@@ -18,7 +18,7 @@ function App() {
   return (
     <div className="app">
       <div className="flex between">
-        <div className="flex">
+        <div className="flex mb1">
           <Stock />
           <Talon />
         </div>
