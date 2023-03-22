@@ -103,6 +103,7 @@ export const CardPilesContextProvider: React.FC<{
 
     dispatch({ type: "setPickupLocation", payload: pickupLocation });
     dispatch({ type: "setIsCardSelected", payload: true });
+    console.log("selected");
   };
 
   const unselectCard = () => {
@@ -118,6 +119,7 @@ export const CardPilesContextProvider: React.FC<{
 
   const moveCard = (event: React.MouseEvent) => {
     const { talon, tableaus, foundations } = state;
+    console.log("moved");
     const legalMove = isLegalMove(event);
     if (!legalMove) {
       unselectCard();

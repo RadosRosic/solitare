@@ -17,14 +17,16 @@ function App() {
 
   return (
     <div className="app">
-      <div className="flex between">
-        <div className="flex mb1">
-          <Stock />
-          <Talon />
+      <div className="container">
+        <div className="flex between">
+          <div className="flex mb1">
+            <Stock />
+            <Talon />
+          </div>
+          <Foundations />
         </div>
-        <Foundations />
+        <Tableaus />
       </div>
-      <Tableaus />
     </div>
   );
 }
